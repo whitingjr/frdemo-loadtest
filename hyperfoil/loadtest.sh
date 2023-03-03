@@ -7,6 +7,10 @@ set -euo pipefail
 
 COMMAND="help"
 SRCDIR=`dirname "$0"`
+HYVERSION=0.23
+HYCLIENT=hyperfoil-${HYVERSION}
+HYCLIENT_DIR=$SRCDIR/${HYCLIENT}
+
 while (( "$#" )); do
   case "$1" in
     setup|run|help)
@@ -47,6 +51,20 @@ EOF
 }
 test.setup() {
   oc apply -f ${SRCDIR}/hyperfoil.yaml
+}
+
+test.run() {
+  if [ ! -d "$HYCLIENT_DIR" ]
+  then
+    wget https://github.com/Hyperfoil/Hyperfoil/releases/download/release-${HYVERSION}/hyperfoil-${HYVERSION}.zip
+    unzip -o hyperfoil-${HYVERSION}.zip
+    rm hyperfoil-${HYVERSION}.zip
+  fi
+  ###
+  ## TODO: ASK HyperFoil team how to get this cli works. It can't pass these flags to cli.sh
+  ###
+  #${HYCLIENT_DIR}/bin/cli.sh connect $(oc get route hyperfoil --template='http://{{.spec.host}}')
+  exec ${HYCLIENT_DIR}/bin/cli.sh
 }
 
 info() {
