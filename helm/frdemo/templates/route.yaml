@@ -1,0 +1,24 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ include "frdemo.name" . }}
+  labels: {}
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  {{- if .Values.deploy.route.host }}
+  host: {{ .Values.deploy.route.host }}
+  {{- end }}
+  to:
+    kind: Service
+    {{- if .Values.deploy.tls.enabled }}
+    name: {{ include "frdemo.name" . }}-secure
+    {{- else }}
+    name: {{ include "frdemo.name" . }}
+    {{- end }}
+    weight: 100
+  {{- if .Values.deploy.route.tls.enabled }}
+  tls:
+    termination: {{ .Values.deploy.route.tls.termination }}
+    insecureEdgeTerminationPolicy: {{ .Values.deploy.route.tls.insecureEdgeTerminationPolicy }}
+  {{- end }}

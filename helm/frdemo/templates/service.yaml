@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "frdemo.name" . }}
+  labels:
+    {{- include "frdemo.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8080
+      name: http
+  selector:
+    {{- include "frdemo.selectorLabels" . | nindent 4 }}
+  type: ClusterIP
+  sessionAffinity: None

@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "frdemo.name" . }}
+  labels:
+    {{- include "frdemo.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "frdemo.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "frdemo.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ include "frdemo.name" . }}
+          image: "{{ .Values.image.name }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          - name: ping
+            containerPort: 8888
+            protocol: TCP
+          {{- if .Values.deploy.tls.enabled }}
+          - name: https
+            containerPort: 8443
+            protocol: TCP
+          {{- end }}
+          - name: admin
+            containerPort: 9990
+            protocol: TCP
+          {{- if .Values.deploy.resources }}
+          resources:
+            {{ toYaml .Values.deploy.resources | nindent 12 }}
+          {{- end }}
+          {{- if .Values.deploy.livenessProbe }}
+          livenessProbe:
+            {{- tpl (toYaml .Values.deploy.livenessProbe) . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.deploy.readinessProbe }}
+          readinessProbe:
+            {{- tpl (toYaml .Values.deploy.readinessProbe) . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.deploy.startupProbe }}
+          startupProbe:
+            {{- tpl (toYaml .Values.deploy.startupProbe) . | nindent 12 }}
+          {{- end }}
+          env:
+            - name: DB_HOST
+              value: {{ .Values.deploy.dbhost}}
+            - name: DB_NAME
+              value: { { .Values.deploy.dbname } }
+            - name: DB_USERNAME
+              value: { { .Values.deploy.dbusername } }
+            - name: DB_PASSWORD
+              value: { { .Values.deploy.dbpassword } }
+            - name: KAFKA_SERVER
+              value: {{ .Values.deploy.kafkaserver}}

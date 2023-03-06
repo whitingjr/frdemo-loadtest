@@ -1,0 +1,46 @@
+name: frdemo-backend
+image:
+  name: jimmarh/backend:latest
+  pullPolicy: Always
+autoscaling:
+  enabled: false
+replicaCount: 1
+deploy:
+  dbhost: postgresql
+  enabled: true
+  replicas: 1
+  tls: {}
+  route:
+    enabled: true
+    tls:
+      enabled: true
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  livenessProbe:
+    httpGet:
+      path: /health/live
+      port: admin
+  readinessProbe:
+    httpGet:
+      path: /health/ready
+      port: admin
+  startupProbe:
+    httpGet:
+      path: /health/live
+      port: admin
+service:
+  port: 80
+postgresql:
+  enabled: false
+  auth:
+    username: frdemo
+    password: frdemo
+    database: frdemo
+  service:
+    type: ClusterIP
+    name: frdemo-backend-postgresql
+  primary:
+    persistence:
+      enabled: false
+
+
