@@ -7,6 +7,9 @@ autoscaling:
 replicaCount: 1
 deploy:
   dbhost: postgresql
+  dbname: frdemo
+  dbusername: frdemo
+  dbpassword: frdemo
   enabled: true
   replicas: 1
   tls: {}

@@ -63,10 +63,10 @@ spec:
             - name: DB_HOST
               value: {{ .Values.deploy.dbhost}}
             - name: DB_NAME
-              value: { { .Values.deploy.dbname } }
+              value: {{ .Values.deploy.dbname}}
             - name: DB_USERNAME
-              value: { { .Values.deploy.dbusername } }
+              value: {{ .Values.deploy.dbusername}}
             - name: DB_PASSWORD
-              value: { { .Values.deploy.dbpassword } }
+              value: {{ .Values.deploy.dbpassword}}
             - name: KAFKA_SERVER
               value: {{ .Values.deploy.kafkaserver}}
