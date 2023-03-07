@@ -1,0 +1,19 @@
+name: frdemo-baremental
+agents:
+  agent-one:
+  agent-two:
+http:
+  host:  http://brontes06.lab.eng.brq2.redhat.com
+  sharedConnections: 80
+ergonomics: # Disable stopping the scenario on 4xx or 5xx response
+  autoRangeCheck: false
+usersPerSec: 10
+duration: 5s
+# Each session will take at least 3 seconds (see the sleep time below),
+# and we'll be running ~10 per second. That makes 30, let's give it
+# some margin and set this to 40.
+maxSessions: 40
+scenario:
+- test:
+  - httpRequest:
+      GET: /incidents/
