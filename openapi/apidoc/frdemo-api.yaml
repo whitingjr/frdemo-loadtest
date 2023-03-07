@@ -1,0 +1,279 @@
+---
+openapi: 3.0.3
+info:
+  title: frdemo-backend.war
+  version: "1.0"
+servers:
+  - url: /frdemo-backend
+paths:
+  /api/missions:
+    get:
+      responses:
+        "200":
+          description: OK
+  /api/missions/clear:
+    post:
+      responses:
+        "200":
+          description: OK
+  /api/missions/responders/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /disaster-service/center:
+    get:
+      responses:
+        "200":
+          description: OK
+  /disaster-service/inclusion-zones:
+    get:
+      responses:
+        "200":
+          description: OK
+  /disaster-service/shelters:
+    get:
+      responses:
+        "200":
+          description: OK
+  /incident-priority-service/priority-zones:
+    get:
+      responses:
+        "200":
+          description: OK
+  /incidents:
+    get:
+      responses:
+        "200":
+          description: OK
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Incident'
+      responses:
+        "200":
+          description: OK
+  /incidents/byname/{name}:
+    get:
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /incidents/incident/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /incidents/reset:
+    post:
+      responses:
+        "200":
+          description: OK
+  /incidents/{status}:
+    get:
+      parameters:
+        - name: status
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /responder-service/available:
+    get:
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            format: int32
+            type: integer
+        - name: offset
+          in: query
+          required: false
+          schema:
+            format: int32
+            type: integer
+      responses:
+        "200":
+          description: OK
+  /responder-service/byname/{name}:
+    get:
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /responder-service/clear:
+    post:
+      parameters:
+        - name: delete
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /responder-service/person:
+    get:
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            format: int32
+            type: integer
+        - name: offset
+          in: query
+          required: false
+          schema:
+            format: int32
+            type: integer
+      responses:
+        "200":
+          description: OK
+  /responder-service/reset:
+    post:
+      responses:
+        "200":
+          description: OK
+  /responder-service/responder:
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Responder'
+      responses:
+        "200":
+          description: OK
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Responder'
+      responses:
+        "200":
+          description: OK
+  /responder-service/responders:
+    get:
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            format: int32
+            type: integer
+        - name: offset
+          in: query
+          required: false
+          schema:
+            format: int32
+            type: integer
+      responses:
+        "200":
+          description: OK
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Responder'
+      responses:
+        "200":
+          description: OK
+  /responder-service/stats:
+    get:
+      responses:
+        "200":
+          description: OK
+  /responder-service/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    Incident:
+      type: object
+      properties:
+        id:
+          type: string
+        lat:
+          type: number
+        lon:
+          type: number
+        numberOfPeople:
+          format: int32
+          type: integer
+        medicalNeeded:
+          type: boolean
+        victimName:
+          type: string
+        victimPhoneNumber:
+          type: string
+        reportedTime:
+          format: date-time
+          type: string
+        status:
+          type: string
+    Responder:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        phoneNumber:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        boatCapacity:
+          format: int32
+          type: integer
+        medicalKit:
+          type: boolean
+        available:
+          type: boolean
+        person:
+          type: boolean
+        enrolled:
+          type: boolean
