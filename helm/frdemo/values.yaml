@@ -6,10 +6,7 @@ autoscaling:
   enabled: false
 replicaCount: 1
 deploy:
-  dbhost: postgresql
-  dbname: frdemo
-  dbusername: frdemo
-  dbpassword: frdemo
+  kafkaserver: kafka-service
   enabled: true
   replicas: 1
   tls: {}
@@ -34,16 +31,24 @@ deploy:
 service:
   port: 80
 postgresql:
-  enabled: false
-  auth:
-    username: frdemo
-    password: frdemo
-    database: frdemo
+  enabled: true
+  database:
+    name: frdemo
+    username: postgres
+    password: postgres
   service:
+    name: postgresql
     type: ClusterIP
-    name: frdemo-backend-postgresql
-  primary:
-    persistence:
-      enabled: false
+kafaka:
+   enabled: true
+   service:
+     name: kafka-service
+   type: ClusterIP
+zookeeper:
+   enabled: true
+   service:
+     name: zookeeper-service
+
+
 
 

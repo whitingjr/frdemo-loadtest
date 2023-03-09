@@ -6,7 +6,25 @@ version: 0.1.0
 appVersion: "1.16.0"
 
 dependencies:
-  - name: postgresql
-    version: "12.2.2"
-    repository: "https://charts.bitnami.com/bitnami"
+  ##The bitnami postgresql chat creats pod from Stateful
+  ##openshift always complains the ssc issue with:
+  ##
+  ##create Pod frdemo-chart-postgresql-0 in StatefulSet frdemo-chart-postgresql failed error:
+  ## pods "frdemo-chart-postgresql-0" is forbidden: unable to validate against any security context constraint:
+  ## [provider "anyuid": Forbidden: not usable by user or serviceaccount,
+  ## provider "pipelines-scc": Forbidden: not usable by user or serviceaccount,"
+  ##
+  ## From google, this can be an workaround by adding some policy :
+  ## oc adm policy add-scc-to-user privileged -z default -n yournamespace
+  ##
+  ## We can't execute this grant in openshift dev sandbox env, so we create this local chart.
+  ## This localpostgresql chart still uses a pod to server request instead of creating any StatefulSet.
+  ## this makes it simple and can be deployed to openshift dev sandbox
+  - name: localpostgresql
+    version: "0.1.0"
+    repository: "file://../postgresql"
     condition: postgresql.enabled
+  - name: localkafka
+    version: "0.1.0"
+    repository: "file://../kafka"
+    condition: kafka.enabled

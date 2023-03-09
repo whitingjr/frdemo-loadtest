@@ -61,12 +61,12 @@ spec:
           {{- end }}
           env:
             - name: DB_HOST
-              value: {{ .Values.deploy.dbhost}}
+              value: {{ .Values.postgresql.service.name}}
             - name: DB_NAME
-              value: {{ .Values.deploy.dbname}}
+              value: {{ .Values.postgresql.database.name}}
             - name: DB_USERNAME
-              value: {{ .Values.deploy.dbusername}}
+              value: {{ .Values.postgresql.database.username}}
             - name: DB_PASSWORD
-              value: {{ .Values.deploy.dbpassword}}
+              value: {{ .Values.postgresql.database.password}}
             - name: KAFKA_SERVER
-              value: {{ .Values.deploy.kafkaserver}}
+              value: {{ .Values.kafaka.service.name}}
