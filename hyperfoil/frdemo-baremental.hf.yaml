@@ -3,17 +3,48 @@ agents:
   agent-one:
   agent-two:
 http:
-  host:  http://brontes06.lab.eng.brq2.redhat.com
+  host:  https://frdemo-rhn-engineering-ema-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
   sharedConnections: 80
 ergonomics: # Disable stopping the scenario on 4xx or 5xx response
   autoRangeCheck: false
-usersPerSec: 10
+usersPerSec: 5
 duration: 5s
 # Each session will take at least 3 seconds (see the sleep time below),
 # and we'll be running ~10 per second. That makes 30, let's give it
 # some margin and set this to 40.
 maxSessions: 40
 scenario:
-- test:
-  - httpRequest:
-      GET: /incidents/
+  - jsonBody:
+      - randomInt:
+          min: 1
+          max: 10
+          toVar: numberOfPeople
+      - randomCsvRow:
+          file: ./data/incident-sample-data.csv
+          columns:
+            0: lat
+            1: lon
+            2: victimName
+            3: victimPhoneNumber
+      - randomItem:
+          list:
+            - true
+            - false
+          toVar: medicalNeeded
+      - httpRequest:
+          POST: /incidents
+          # Hyperfoil doesn't know what's the content of the body string, if the server
+          # requires correct content-type header you have to provide it yourselves
+          headers:
+            content-type: application/json
+          # Here we specify a multi-line string. For more info about multiline strings,
+          # compacting/chopping of newlines etc. please check out https://yaml-multiline.info/
+          body: |
+            {
+             "lat": ${lat},
+             "lon": ${lon},
+             "numberOfPeople": ${numberOfPeople},
+             "victimName": ${victimName},
+             "victimPhoneNumber": ${victimPhoneNumber},
+             "medicalNeeded": ${medicalNeeded}
+            }
