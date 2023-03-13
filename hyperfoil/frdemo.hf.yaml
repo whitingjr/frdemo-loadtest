@@ -1,20 +1,18 @@
-name: frdemo-baremental
+name: frdemo
 agents:
   agent-one:
   agent-two:
 http:
-  host:  https://frdemo-rhn-engineering-ema-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
-  sharedConnections: 20
+  host: !param SERVER
+  sharedConnections: 80
 ergonomics: # Disable stopping the scenario on 4xx or 5xx response
   autoRangeCheck: false
 usersPerSec: 10
-duration: 10s
-# Each session will take at least 3 seconds (see the sleep time below),
-# and we'll be running ~10 per second. That makes 30, let's give it
-# some margin and set this to 40.
+duration: 5s
 maxSessions: 40
 scenario:
-  - jsonBody:
+  initialSequences:
+  - createIncident:
       - randomItem:
           list:
             - 34.23452
@@ -68,10 +66,6 @@ scenario:
             - 34.14923
             - 34.12585
           toVar: lat
-      - randomInt:
-          min: 1
-          max: 10
-          toVar: numberOfPeople
       - randomItem:
           list:
             - -77.83742
@@ -236,6 +230,10 @@ scenario:
             - true
             - false
           toVar: medicalNeeded
+      - randomInt:
+          min: 1
+          max: 10
+          toVar: numberOfPeople
       - httpRequest:
           POST: /incidents
           headers:
@@ -249,3 +247,277 @@ scenario:
              "victimPhoneNumber": "${victimPhoneNumber}",
              "medicalNeeded": ${medicalNeeded}
             }
+  - createResponder:
+      - randomItem:
+          list:
+            - 34.20706
+            - 34.23240
+            - 34.20004
+            - 34.19622
+            - 34.24495
+            - 34.13282
+            - 34.19176
+            - 34.23101
+            - 34.22685
+            - 34.19909
+            - 34.02982
+            - 34.14921
+            - 34.03555
+            - 34.06825
+            - 34.12903
+            - 34.15310
+            - 34.12029
+            - 34.22637
+            - 34.19573
+            - 34.16638
+            - 34.14186
+            - 34.21288
+            - 34.24209
+            - 34.16824
+            - 34.23220
+            - 34.20821
+            - 34.21376
+            - 34.18547
+            - 34.16780
+            - 34.21410
+            - 34.15382
+            - 34.06380
+            - 34.22628
+            - 34.19625
+            - 34.06424
+            - 34.16094
+            - 34.21765
+            - 34.20042
+            - 34.23801
+            - 34.06777
+            - 34.23165
+            - 34.24318
+            - 34.12786
+            - 34.21494
+            - 34.08720
+            - 34.07635
+            - 34.25946
+            - 34.21731
+            - 34.24387
+            - 34.24767
+          toVar: resLat
+      - randomItem:
+          list:
+            - -77.83742
+            - -77.84095
+            - -77.90289
+            - -77.81184
+            - -77.87147
+            - -77.80446
+            - -77.89243
+            - -77.84894
+            - -77.91779
+            - -77.93645
+            - -77.92571
+            - -77.84347
+            - -77.87645
+            - -77.94282
+            - -77.90797
+            - -77.89453
+            - -77.83932
+            - -77.92125
+            - -77.90470
+            - -77.93895
+            - -77.87513
+            - -77.82772
+            - -77.96932
+            - -77.82034
+            - -77.96473
+            - -77.86308
+            - -77.91462
+            - -77.91291
+            - -77.88276
+            - -77.83765
+            - -77.84635
+            - -77.94548
+            - -77.85417
+            - -77.90897
+            - -77.87800
+            - -77.88856
+            - -77.81502
+            - -77.95148
+            - -77.84761
+            - -77.87578
+            - -77.97605
+            - -77.90800
+            - -77.93797
+            - -77.91295
+            - -77.93987
+            - -77.90728
+            - -77.88937
+            - -77.86888
+            - -77.89814
+            - -77.88488
+          toVar: resLon
+      - randomItem:
+          list:
+            - Chloe Evans
+            - Santiago Campbell
+            - Elijah Roberts
+            - Isaac Lopez
+            - Kinsley Adams
+            - Ezra Russell
+            - Kaylee King
+            - Emilia Mosher
+            - Ezekiel Bailey
+            - Daniel Garcia
+            - Genesis Morris
+            - Lucas Bennett
+            - Abigail Reed
+            - Parker Carter
+            - John Moore
+            - Leonardo Perry
+            - Samantha Miller
+            - Hailey Cooper
+            - Nova Bailey
+            - Nevaeh Thompson
+            - Jayden Parker
+            - Nora Butler
+            - James Wood
+            - Emily Rodriguez
+            - Christopher Bryant
+            - James Evans
+            - Peyton Rogers
+            - Alexa Turner
+            - Sarah Lee
+            - Jace Mitchell
+            - Ryan Henderson
+            - Nicholas Moore
+            - Maya Smith
+            - Everly Wilson
+            - Ezekiel Diaz
+            - Nora Coleman
+            - Emma Hall
+            - Eliana Butler
+            - Valentina Jackson
+            - Andrew Peterson
+            - Allison Shaaf
+            - Levi Lewis
+            - Jim Williams
+            - Cameron Torres
+            - Harper Johnson
+            - Nova Phillips
+            - Evelyn Cooper
+            - Maya Cook
+            - Jameson Rivera
+            - Ethan Washington
+          toVar: resName
+      - randomItem:
+          list:
+            - (651) 555-5750
+            - (651) 555-6173
+            - (414) 555-4144
+            - (704) 555-1025
+            - (828) 555-8899
+            - (651) 555-6856
+            - (651) 555-6008
+            - (859) 555-0319
+            - (336) 555-6575
+            - (704) 555-6289
+            - (252) 555-8314
+            - (828) 555-3980
+            - (704) 555-0762
+            - (984) 555-4898
+            - (336) 555-7676
+            - (720) 555-9901
+            - (252) 555-5089
+            - (252) 555-7101
+            - (651) 555-4420
+            - (336) 555-5668
+            - (828) 555-8321
+            - (252) 555-3395
+            - (704) 555-0581
+            - (202) 555-6498
+            - (252) 555-3091
+            - (828) 555-8783
+            - (651) 555-5537
+            - (828) 555-9582
+            - (828) 555-4452
+            - (651) 555-1953
+            - (984) 555-8020
+            - (414) 555-6675
+            - (252) 555-4205
+            - (651) 555-9613
+            - (252) 555-8679
+            - (828) 555-2194
+            - (414) 555-0104
+            - (651) 555-9048
+            - (336) 555-4224
+            - (651) 555-7244
+            - (984) 555-9926
+            - (704) 555-9830
+            - (984) 555-7438
+            - (828) 555-8986
+            - (704) 555-8050
+            - (651) 555-5808
+            - (704) 555-2101
+            - (651) 555-9603
+            - (828) 555-2319
+            - (704) 555-8935
+          toVar: resPhone
+      - randomItem:
+          list:
+            - true
+            - false
+          toVar: enrolled
+      - randomInt:
+          min: 1
+          max: 20
+          toVar: boatCapacity
+      - randomItem:
+          list:
+            - true
+            - false
+          toVar: medicalKit
+      - randomItem:
+          list:
+            - true
+            - false
+          toVar: persion
+      - httpRequest:
+          POST: /responder-service/responder
+          headers:
+            content-type: application/json
+          body: |
+            {
+             "latitude": "${resLat}",
+             "longitude": "${resLon}",
+             "enrolled": ${enrolled},
+             "name": "${resName}",
+             "phoneNumber": "${resPhone}",
+             "boatCapacity": ${boatCapacity},
+             "medicalKit": ${medicalKit},
+             "available": true,
+             "person": ${persion}
+            }
+  - getAllMissions:
+      - httpRequest:
+          GET: /api/missions
+          handler:
+            body:
+              json:
+                query: .[]
+                processor:
+                  array:
+                    toVar: missions
+                    format: BYTES
+                    maxSize: 10
+      - awaitAllResponses:
+      - foreach:
+          fromVar: missions
+          sequence: getResponder
+  sequences:
+    - getResponder[10]:
+        - json:
+            fromVar: missions[.]
+            query: .responderId
+            toVar: responders[.]
+        - httpRequest:
+            GET: /responder-service/${responders[.]}
+
+
