@@ -4,12 +4,12 @@ agents:
   agent-two:
 http:
   host: !param SERVER
-  sharedConnections: 80
+  sharedConnections: 50
 ergonomics: # Disable stopping the scenario on 4xx or 5xx response
   autoRangeCheck: false
-usersPerSec: 10
+usersPerSec: 1
 duration: 5s
-maxSessions: 40
+maxSessions: 50
 scenario:
   initialSequences:
   - createIncident:
@@ -495,6 +495,9 @@ scenario:
              "available": true,
              "person": ${persion}
             }
+  - getAvaiablelResponders:
+      - httpRequest:
+          GET: /responder-service/available
   - getAllMissions:
       - httpRequest:
           GET: /api/missions
@@ -506,18 +509,41 @@ scenario:
                   array:
                     toVar: missions
                     format: BYTES
-                    maxSize: 10
+                    maxSize: 2
       - awaitAllResponses:
       - foreach:
           fromVar: missions
-          sequence: getResponder
+          sequence: getResponderById
+  - getAllIncidents:
+      - httpRequest:
+          GET: /incidents
+          handler:
+            body:
+              json:
+                query: .[]
+                processor:
+                  array:
+                    toVar: incidents
+                    format: BYTES
+                    maxSize: 2
+      - awaitAllResponses:
+      - foreach:
+          fromVar: incidents
+          sequence: getIncidentById
   sequences:
-    - getResponder[10]:
+    - getResponderById[2]:
         - json:
             fromVar: missions[.]
             query: .responderId
             toVar: responders[.]
         - httpRequest:
             GET: /responder-service/${responders[.]}
+    - getIncidentById[2]:
+        - json:
+            fromVar: incidents[.]
+            query: .id
+            toVar: incidentIds[.]
+        - httpRequest:
+            GET: /incidents/incident/${incidentIds[.]}
 
 
