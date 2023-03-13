@@ -3,12 +3,17 @@ image:
   name: jimmarh/backend:latest
   pullPolicy: Always
 autoscaling:
-  enabled: false
-replicaCount: 1
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 200
 deploy:
   kafkaserver: kafka-service
   enabled: true
-  replicas: 1
+  resources:
+    requests:
+      memory: "500Mi"
+      cpu: "75m"
   tls: {}
   route:
     enabled: true

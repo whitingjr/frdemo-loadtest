@@ -7,8 +7,8 @@ http:
   sharedConnections: 50
 ergonomics: # Disable stopping the scenario on 4xx or 5xx response
   autoRangeCheck: false
-usersPerSec: 1
-duration: 5s
+usersPerSec: 10
+duration: 10s
 maxSessions: 50
 scenario:
   initialSequences:
