@@ -6,14 +6,14 @@ autoscaling:
   enabled: true
   minReplicas: 1
   maxReplicas: 10
-  targetCPUUtilizationPercentage: 200
+  targetCPUUtilizationPercentage: 100
 deploy:
   kafkaserver: kafka-service
   enabled: true
   resources:
     requests:
       memory: "500Mi"
-      cpu: "75m"
+      cpu: "100m"
   tls: {}
   route:
     enabled: true
