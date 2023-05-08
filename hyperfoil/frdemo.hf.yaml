@@ -8,7 +8,7 @@ http:
 ergonomics: # Disable stopping the scenario on 4xx or 5xx response
   autoRangeCheck: false
 phases:
-- rampUp:
+  - rampUp:
     increasingRate:
       duration: !param RAMP_UP_DURATION 100s
       isWarmup: true
@@ -69,10 +69,10 @@ phases:
                   toVar: incidentIds[.]
               - httpRequest:
                   GET: /incidents/incident/${incidentIds[.]}
-- demoSteady:
-    constantRate:
-      usersPerSec: !param USERS_PER_SEC 100
-      maxSessions: !param MAX_HTTP_SESSIONS 200
-      startAfter: rampUp
-      duration: !param STEADY_STATE_DURATION 1m
-      scenario: *frdemoGet
+  - demoSteady:
+      constantRate:
+        usersPerSec: !param USERS_PER_SEC 100
+        maxSessions: !param MAX_HTTP_SESSIONS 200
+        startAfter: rampUp
+        duration: !param STEADY_STATE_DURATION 1m
+        scenario: *frdemoGet
