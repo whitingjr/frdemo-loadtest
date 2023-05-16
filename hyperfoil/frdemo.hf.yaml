@@ -1,7 +1,11 @@
 name: frdemo
 agents:
-  agent-one: !param AGENT_1_HOST localhost
-  agent-two: !param AGENT_2_HOST localhost
+  agent-one:
+    host: !param AGENT_1_HOST localhost
+    log: mf-debug
+  agent-two:
+    host: !param AGENT_2_HOST localhost
+    log: mf-debug
 http:
   host: !param SERVER
   sharedConnections: !param SHARED_CONNECTIONS 500
