@@ -6,6 +6,7 @@ agents:
   agent-two:
     host: !param AGENT_2_HOST localhost
     log: hf-debug
+    extras: " -Dlog4j2.debug=true "
 http:
   host: !param SERVER
   sharedConnections: !param SHARED_CONNECTIONS 500
